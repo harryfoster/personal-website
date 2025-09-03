@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Overpass, Overpass_Mono } from "next/font/google";
+import { Providers } from './providers'
+import Navbar from "./navbar";
 import "./globals.css";
+import ThemeSwitcher from "./_components/ThemeSwitcher";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const overpass = Overpass({
   subsets: ["latin"],
+  variable: "--font-overpass",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const overpassMono = Overpass_Mono({
   subsets: ["latin"],
+  variable: "--font-overpass-mono",
 });
 
 export const metadata: Metadata = {
@@ -23,11 +26,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${overpass.variable} ${overpassMono.variable} antialiased font-overpass`}
       >
-        {children}
+        <Providers>
+          <div className="dark:bg-slate-800 dark:text-slate-200 bg-slate-200 text-slate-900 transition-colors ease-in-out duration-500 min-h-screen flex flex-col">
+          <Navbar />
+          {children}
+          <div className="fixed rounded-tl-3xl bg-slate-800 dark:bg-slate-200 text-slate-200 dark:text-slate-800 bottom-0 p-2 right-0 w-12 transition-colors duration-500 ease-in-out">
+            <ThemeSwitcher />
+          </div>
+          </div>
+        </Providers>
       </body>
     </html>
   );
